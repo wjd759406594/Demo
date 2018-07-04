@@ -48,7 +48,7 @@ define(function (require, exports, module) {
             WebViewJavascriptBridge.callHandler('back', location.href);
         },
         restart: function () {
-            WebViewJavascriptBridge.callHandler('restart', "");
+            WebViewJavascriptBridge.callHandler('restartH5', "");
         },
         download: function (updateUrl) {
             WebViewJavascriptBridge.callHandler('download', updateUrl);
@@ -230,7 +230,60 @@ define(function (require, exports, module) {
         },
         statisticsEvent: function (event) {
             WebViewJavascriptBridge.callHandler('statisticsEvent', event);
-        }
+        },
+        loginPage: function () {
+            WebViewJavascriptBridge.callHandler('loginPage');
+        },
+        getCityAddress: function (cb) {
+            WebViewJavascriptBridge.callHandler('getCityAddress', "", cb);
+        },
+        getContact: function (cb) {
+            WebViewJavascriptBridge.callHandler('getContact', "", cb);
+        },
+        requestOcr: function (type, cb) {
+            WebViewJavascriptBridge.callHandler('requestOcr', type, cb);
+        },
+        selectImage: function (cb) {
+            WebViewJavascriptBridge.callHandler('selectImage', "", cb);
+        },
+        getLicenseProvince: function (name, cb) {
+            WebViewJavascriptBridge.callHandler('getLicenseProvince', name, cb);
+        },
+        getCarType: function (cb) {
+            WebViewJavascriptBridge.callHandler('getCarType', "", cb);
+        },
+        getCarLength: function (cb) {
+            WebViewJavascriptBridge.callHandler('getCarLength', "", cb);
+        },
+        getToken: function (cb) {
+            WebViewJavascriptBridge.callHandler('getToken', "", cb);
+        },
+        requestPermission: function (array, cb) {
+            WebViewJavascriptBridge.callHandler('requestPermission', array, cb);
+        },
+        netWorkRequest: function (dict, cb) {
+            WebViewJavascriptBridge.callHandler('netWorkRequest', dict, cb);
+        },
+        getUserInfoImage: function (cb) {
+            WebViewJavascriptBridge.callHandler('getUserInfoImage', "", cb);
+        },
+        callFadada: function (url, cb) {
+            WebViewJavascriptBridge.callHandler('callFadada', url, cb);
+
+        },
+        callBankList: function (cb) {
+            WebViewJavascriptBridge.callHandler('getBankList', "",cb);
+
+        },
+        callDriverLoanQuestions: function () {
+            WebViewJavascriptBridge.callHandler('callDriverLoanQuestions');
+        },
+        viewContract: function (cb) {
+            WebViewJavascriptBridge.callHandler('viewContract', cb);
+        },
+        isFirstLoad: function (cb) {
+            WebViewJavascriptBridge.callHandler('isFirstLoad', "", cb);
+        },
     };
     window.bridge = bridge;
     module.exports = bridge;

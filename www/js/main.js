@@ -1,10 +1,12 @@
 var appVersion = '6',//C8
     appName = 'T' + appVersion,
-    version = "1.0.0",
-    env = "t6",
+    version = "1.0.1",
+    env = "debug",
     pageSize = 20,
     sheetLength = 12,
-    checkUpdateTime = 2 * 60 * 60 * 1000,
+    // Commented by wwp for debug
+    // checkUpdateTime = 2 * 60 * 60 * 1000,
+    checkUpdateTime = 30 * 60 * 1000,
     timeOut = 60;//请求超时时间
 var userId = localStorage.getItem('userId');
 var dataBaseName = userId ? "t6_" + userId : false;
@@ -25,13 +27,13 @@ function getUrlParam(name) {
 Parse.initialize("No9gLQqPRp9EYApXvuNgY9MNY7ey", "ZgteJYWkgU86sYpW4xWZiNX2sajH");
 Parse.serverURL = "http://106.75.10.127:1337/1";
 
-var loginUrl = "http://106.75.10.127:8080/portal/";
+var serverAddress = "https://api.yudianbank.com:6014";
 
 if (location.host.startsWith('localhost') || location.host.startsWith('192.')) {
     version = "9.9.9";
-    env = "t6 localhost";
-    loginUrl = "http://106.75.10.127:8080/portal/";
+    env = "debug localhost";
     Parse.serverURL = "http://106.75.10.127:1337/1";
+    serverAddress = "https://api.yudianbank.com:6014";
 }
 
 seajs.config({
@@ -55,6 +57,7 @@ function connectWebViewJavascriptBridge(callback) {
         document.documentElement.removeChild(WVJBIframe)
     }, 0)
 }
+
 if (!String.prototype.startsWith) {
     String.prototype.startsWith = function (searchString, position) {
         position = position || 0;
@@ -221,6 +224,7 @@ Array.prototype.remove = function (dx) {
     }
     this.length -= 1
 };
+
 /**
  * 生成guid
  * @returns {string}

@@ -1,6 +1,5 @@
 /**
- * 核心功能
- * @auther DeonZhu
+ *
  */
 define(function (require, exports, module) {
     window.$$ = Dom7;
@@ -161,7 +160,7 @@ define(function (require, exports, module) {
             dynamicNavbar: true
         });
         Core.Template.init();
-        if (navigator.userAgent.indexOf("kjwuliuyun-zx") === -1) {
+        if (navigator.userAgent.indexOf("kjchezhu") === -1) {
             //noinspection JSUnresolvedVariable
             window.seajs.use("native/web", function () {
                 native.init();
@@ -241,32 +240,33 @@ define(function (require, exports, module) {
         var init = function (flag) {
             var now = (new Date()).getTime();
             var lastCheckTime = Core.Cache.get('lastCheckTime') || 0;
-            var showIosUpdate = Core.Utils.getConfig('showIosUpdate') || false;
-            if ((Core.App.device.ios && showIosUpdate) || Core.App.device.android) {
-                if ((now - lastCheckTime) > checkUpdateTime || flag) {
-                    Core.Cache.set('lastCheckTime', now);
-                    var AppVersion = Parse.Object.extend("AppVersion");
-                    var query = new Parse.Query(AppVersion);
-                    query.equalTo('appName', "T6s");
-                    query.descending("createdAt");
-                    query.first({
-                        success: function (result) {
-                            //Core.App.hidePreloader();
-                            if (result) {
-                                var data = result['attributes'];
-                                Core.Cache.set('lastUpdate', data);
-                                update(data, true);
+            if (Core.App.device.ios || Core.App.device.android) {
+                native.isFirstLoad(function (isFirstLoad) {
+                    if (isFirstLoad || (now - lastCheckTime) > checkUpdateTime || flag) {
+                        Core.Cache.set('lastCheckTime', now);
+                        var AppVersion = Parse.Object.extend("AppVersion");
+                        var query = new Parse.Query(AppVersion);
+                        query.equalTo('appName', "kjcz");
+                        query.descending("createdAt");
+                        query.first({
+                            success: function (result) {
+                                //Core.App.hidePreloader();
+                                if (result) {
+                                    var data = result['attributes'];
+                                    Core.Cache.set('lastUpdate', data);
+                                    update(data, true);
+                                }
+                            },
+                            error: function () {
+                                //Core.App.hidePreloader();
                             }
-                        },
-                        error: function () {
-                            //Core.App.hidePreloader();
-                        }
-                    });
+                        });
 
-                    setUserInfo(false);
-                } else {
-                    update(Core.Cache.get('lastUpdate'));
-                }
+                        setUserInfo(false);
+                    } else {
+                        update(Core.Cache.get('lastUpdate'));
+                    }
+                });
             }
         };
         var update = function (data, showToast) {
@@ -279,20 +279,21 @@ define(function (require, exports, module) {
             var minVersion = data['minVersion'].replace(/\./g, "") * 1;
             var minVersionIos = data['minVersionIos'].replace(/\./g, "") * 1;
             var updateInfo;
-            if ((Core.App.device.os === 'android' && currentVersion < minVersion)
-                || (Core.App.device.os === 'ios' && currentVersion < minVersionIos)) {
-                updateInfo = {
-                    url: data['apkUrl'],
-                    zip: data['url'],
-                    message: data['message'],
-                    version: data['minVersion'],
-                    versionIos: data['minVersionIos']
-                };
-                console.log(updateInfo);
-                Core.Cache.remove('SheetTmpl');
-                Core.Cache.remove('Template');
-                native.download(updateInfo);
-            } else if (currentVersion < latestVersion) {
+            // if ((Core.App.device.os === 'android' && currentVersion < minVersion)
+            //     || (Core.App.device.os === 'ios' && currentVersion < minVersionIos)) {
+            // updateInfo = {
+            //     url: data['apkUrl'],
+            //     zip: data['url'],
+            //     message: data['message'],
+            //     version: data['minVersion'],
+            //     versionIos: data['minVersionIos']
+            // };
+            // console.log(updateInfo);
+            // Core.Cache.remove('SheetTmpl');
+            // Core.Cache.remove('Template');
+            // native.download(updateInfo);
+            // } else
+            if (currentVersion < latestVersion) {
                 updateInfo = {
                     url: data['apkUpdate'] ? data['apkUrl'] : data['url'],
                     zip: data['url'],
@@ -455,18 +456,18 @@ define(function (require, exports, module) {
                                 var tmp = {};
                                 $.each(sheet, function (i, v) {
                                     if (!(i === "template" || i === "activity" ||
-                                        i === "sheet" || i === "memberCardNo" ||
-                                        i === "activity" || i === "localSheets" ||
-                                        i === "prePhone" || i === "toOrgAreas" ||
-                                        i === "isChange" || i === "printCount" ||
-                                        i === "showCreate" || i === "primaryFeeSummaryInfo" ||
-                                        i === "secondaryFeeSummaryInfo" || i === "receiptFromCustomerFeeInfo" ||
-                                        i === "receiptToCustomerFeeInfo" || i === "message" ||
-                                        i === "pickTotalFee" || i === "isPerformanceContainsPremium" || i === "netFee" ||
-                                        i === "salesmanName" || i === "salesmanPhone" || i === "totalFee" || i === "companyName" || i === "printSheetNo" ||
-                                        i === "customerServicePhone" || i === "deliveryModeDesc" || i === "fromProvinceName" || i === "fromCityName" || i === "fromAreaName" ||
-                                        i === "nowTotalFee" || i === "documentFee" || v === ""
-                                    )) {
+                                            i === "sheet" || i === "memberCardNo" ||
+                                            i === "activity" || i === "localSheets" ||
+                                            i === "prePhone" || i === "toOrgAreas" ||
+                                            i === "isChange" || i === "printCount" ||
+                                            i === "showCreate" || i === "primaryFeeSummaryInfo" ||
+                                            i === "secondaryFeeSummaryInfo" || i === "receiptFromCustomerFeeInfo" ||
+                                            i === "receiptToCustomerFeeInfo" || i === "message" ||
+                                            i === "pickTotalFee" || i === "isPerformanceContainsPremium" || i === "netFee" ||
+                                            i === "salesmanName" || i === "salesmanPhone" || i === "totalFee" || i === "companyName" || i === "printSheetNo" ||
+                                            i === "customerServicePhone" || i === "deliveryModeDesc" || i === "fromProvinceName" || i === "fromCityName" || i === "fromAreaName" ||
+                                            i === "nowTotalFee" || i === "documentFee" || v === ""
+                                        )) {
                                         tmp[i] = v;
                                     }
                                 });
@@ -1067,6 +1068,8 @@ define(function (require, exports, module) {
             changePwd: changePwd
         }
     })();
+
+
     /**
      *
      * @type {{postJson, post, get, postFile}}
@@ -1082,35 +1085,20 @@ define(function (require, exports, module) {
          * @returns {boolean}
          */
         var successCallback = function (data, succ, fail) {
-            if ('success' in data) {
-                if (data['success'] == true) {
+            if ('code' in data
+                && 'msg' in data
+                && 'content' in data) {
+                if (data['code'] == 0) {
                     succ(data);
+                } else if (data['code'] == 401) {
+                    native.loginPage();
+                    return false;
                 } else {
-                    if ('url' in lastAjax && lastAjax['url'].indexOf('auth/login') > -1) {
-                        if (Core.App.mainView.activePage.name == 'login') {
-                            native.showToast(data['message']);
-                            return false;
-                        }
-                        Core.App.alert(data['message'], function () {
-                            Core.Page.changePage('login.html', true);
-                        });
-                        return false;
-                    }
-                    if (data['statusCode'] == 401) {
-                        var loginName = localStorage.getItem('loginName');
-                        var pwd = localStorage.getItem('password');
-                        var isLogin = localStorage.getItem('isLogin') || "";
-                        if (loginName && pwd && isLogin === "") {
-                            Core.User.login(loginName, pwd, lastAjax);
-                        }
-                        return false;
-                    }
                     if (typeof(fail) == 'function') {
-                        native.showToast(data['message']);
-                        fail(data['message']);
+                        console.log(data['msg']);
+                        fail(data);
                         return false;
                     }
-                    native.showToast(data['message']);
                 }
             }
         };
@@ -1171,7 +1159,8 @@ define(function (require, exports, module) {
             if (url.indexOf('http') > -1) {
                 return url;
             }
-            var appUrl = localStorage.getItem('appUrl');
+
+            var appUrl = serverAddress;
             if (!appUrl) {
                 Core.Page.changePage('login.html', true);
                 return false;
@@ -1216,58 +1205,60 @@ define(function (require, exports, module) {
                         showLoading: showLoading
                     };
                     url = _getServerUrl(url);
-                    Core.AjaxId = $.ajax({
-                        url: url,
-                        type: type,
-                        data: data,
-                        headers: {
-                            "Accept": "application/json",
-                            "Authorization": Authorization
-                        },
-                        contentType: contentType,
-                        dataType: 'json',
-                        timeout: timeOut * 1000,
-                        beforeSend: function () {
-                            if (showLoading) {
-                                Core.App.showPreloader();
-                            }
-                        },
-                        statusCode: {
-                            /* 404: function () {
-                             native.showToast("请求服务地址不存在");
-                             }*/
-                        },
-                        success: function (data) {
-                            successCallback(data, succ, fail);
-                        },
-                        error: function (error, status) {
-                            if ('timeout' == status) {
-                                native.showToast("请求超时");
-                                return false;
-                            }
-                            errorCallBack(error, fail, url, showLoading);
-                        },
-                        complete: function () {
-                            if (showLoading) {
-                                var time2 = (new Date()).getTime();
-                                if ((time2 - time1) < 500) {
-                                    setTimeout(function () {
+                    native.getToken(function (token) {
+                        Core.AjaxId = $.ajax({
+                            url: url,
+                            type: type,
+                            data: data,
+                            headers: {
+                                "YD_OAUTH": token,
+                                "Accept": "application/json"
+                            },
+                            contentType: contentType,
+                            dataType: 'json',
+                            timeout: timeOut * 1000,
+                            beforeSend: function () {
+                                if (showLoading) {
+                                    Core.App.showPreloader();
+                                }
+                            },
+                            statusCode: {
+                                /* 404: function () {
+                                 native.showToast("请求服务地址不存在");
+                                 }*/
+                            },
+                            success: function (data) {
+                                successCallback(data, succ, fail);
+                            },
+                            error: function (error, status) {
+                                if ('timeout' == status) {
+                                    native.showToast("请求超时");
+                                    return false;
+                                }
+                                errorCallBack(error, fail, url, showLoading);
+                            },
+                            complete: function () {
+                                if (showLoading) {
+                                    var time2 = (new Date()).getTime();
+                                    if ((time2 - time1) < 500) {
+                                        setTimeout(function () {
+                                            Core.AjaxId = 0;
+                                            Core.isLoading = false;
+                                            Core.App.closeModal('.modal.modal-in.modal-preloader');
+                                            Core.App.pullToRefreshDone();
+                                        }, 500);
+                                    } else {
                                         Core.AjaxId = 0;
                                         Core.isLoading = false;
                                         Core.App.closeModal('.modal.modal-in.modal-preloader');
                                         Core.App.pullToRefreshDone();
-                                    }, 500);
-                                } else {
-                                    Core.AjaxId = 0;
-                                    Core.isLoading = false;
-                                    Core.App.closeModal('.modal.modal-in.modal-preloader');
-                                    Core.App.pullToRefreshDone();
+                                    }
+                                }
+                                if (url.indexOf('auth/login') > -1) {
+                                    localStorage.removeItem('isLogin');
                                 }
                             }
-                            if (url.indexOf('auth/login') > -1) {
-                                localStorage.removeItem('isLogin');
-                            }
-                        }
+                        });
                     });
                 }
             });
@@ -1548,6 +1539,23 @@ define(function (require, exports, module) {
         // var ADD_BY_ZHONG_TIE = ".04";    //中铁物流
         // var ADD_BY_DE_BANG = ".01";      //德邦物流
         // var ADD_BY_CITY_STAR = ".03";    //城市之星
+
+        /**
+         * 格式化金额
+         * @param s 金额，n 保留的小数位
+         */
+        var formatMoney = function (s, n) {
+            n = n > 0 && n <= 20 ? n : 2;
+            s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+            var l = s.split(".")[0].split("").reverse(),
+                r = s.split(".")[1];
+            var t = "";
+            for (i = 0; i < l.length; i++) {
+                t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+            }
+            return t.split("").reverse().join("") + "." + r;
+        };
+
         /**
          * 检查是不是物流云运单
          * @param sheetNo
@@ -1978,7 +1986,7 @@ define(function (require, exports, module) {
          */
         var getDeviceType = function (print) {
             var deviceType = '';
-            
+
             var printModSet = Core.Cache.get('printModSet');
             if (printModSet && typeof printModSet['deviceType'] !== 'undefined') {
                 deviceType = printModSet['deviceType'];
@@ -2019,9 +2027,188 @@ define(function (require, exports, module) {
             return flag;
         };
 
+        var mul = function mul(num1, num2) {
+            var m = 0;
+            try {
+                m += num1.toString().split(".")[1].length
+            } catch (e) {
+            }
+            try {
+                m += num2.toString().split(".")[1].length
+            } catch (e) {
+            }
+            return (Number(num1.toString().replace(".", "")) * Number(num2.toString().replace(".", ""))) / Math.pow(10, m)
+        }
+
+        var add = function add(num1, num2) {
+            var r1, r2, m, n;
+            try {
+                r1 = num1.toString().split(".")[1].length
+            } catch (e) {
+                r1 = 0
+            }
+            try {
+                r2 = num2.toString().split(".")[1].length
+            } catch (e) {
+                r2 = 0
+            }
+            m = Math.pow(10, Math.max(r1, r2));
+            n = (r1 >= r2) ? r1 : r2;
+            return ((num1 * m + num2 * m) / m).toFixed(n);
+        }
+        var sub = function sub(num1, num2) {
+            var r1, r2, m, n;
+            try {
+                r1 = num1.toString().split(".")[1].length
+            } catch (e) {
+                r1 = 0
+            }
+            try {
+                r2 = num2.toString().split(".")[1].length
+            } catch (e) {
+                r2 = 0
+            }
+            n = (r1 >= r2) ? r1 : r2;
+            m = Math.pow(10, Math.max(r1, r2));
+            return ((num1 * m - num2 * m) / m).toFixed(n);
+        }
+        var div = function div(arg1, arg2) {
+            var t1 = 0, t2 = 0, r1, r2;
+            try {
+                t1 = arg1.toString().split(".")[1].length
+            } catch (e) {
+            }
+            try {
+                t2 = arg2.toString().split(".")[1].length
+            } catch (e) {
+            }
+            r1 = Number(arg1.toString().replace(".", ""));
+            r2 = Number(arg2.toString().replace(".", ""));
+            return (r1 / r2) * Math.pow(10, t2 - t1);
+        }
+
+
+        var intToChinese = function intToChinese(money) {
+            //汉字的数字
+            var cnNums = new Array('零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖');
+            //基本单位
+            var cnIntRadice = new Array('', '拾', '佰', '仟');
+            //对应整数部分扩展单位
+            var cnIntUnits = new Array('', '万', '亿', '兆');
+            //对应小数部分单位
+            var cnDecUnits = new Array('角', '分', '毫', '厘');
+            //整数金额时后面跟的字符
+            var cnInteger = '整';
+            //整型完以后的单位
+            var cnIntLast = '元';
+            //最大处理的数字
+            var maxNum = 999999999999999.9999;
+            //金额整数部分
+            var integerNum;
+            //金额小数部分
+            var decimalNum;
+            //输出的中文金额字符串
+            var chineseStr = '';
+            //分离金额后用的数组，预定义
+            var parts;
+            if (money == '') { return ''; }
+            money = parseFloat(money);
+            if (money >= maxNum) {
+                //超出最大处理数字
+                return '';
+            }
+            if (money == 0) {
+                chineseStr = cnNums[0] + cnIntLast + cnInteger;
+                return chineseStr;
+            }
+            //转换为字符串
+            money = money.toString();
+            if (money.indexOf('.') == -1) {
+                integerNum = money;
+                decimalNum = '';
+            } else {
+                parts = money.split('.');
+                integerNum = parts[0];
+                decimalNum = parts[1].substr(0, 4);
+            }
+            //获取整型部分转换
+            if (parseInt(integerNum, 10) > 0) {
+                var zeroCount = 0;
+                var IntLen = integerNum.length;
+                for (var i = 0; i < IntLen; i++) {
+                    var n = integerNum.substr(i, 1);
+                    var p = IntLen - i - 1;
+                    var q = p / 4;
+                    var m = p % 4;
+                    if (n == '0') {
+                        zeroCount++;
+                    } else {
+                        if (zeroCount > 0) {
+                            chineseStr += cnNums[0];
+                        }
+                        //归零
+                        zeroCount = 0;
+                        chineseStr += cnNums[parseInt(n)] + cnIntRadice[m];
+                    }
+                    if (m == 0 && zeroCount < 4) {
+                        chineseStr += cnIntUnits[q];
+                    }
+                }
+                chineseStr += cnIntLast;
+            }
+            //小数部分
+            if (decimalNum != '') {
+                var decLen = decimalNum.length;
+                for (var i = 0; i < decLen; i++) {
+                    var n = decimalNum.substr(i, 1);
+                    if (n != '0') {
+                        chineseStr += cnNums[Number(n)] + cnDecUnits[i];
+                    }
+                }
+            }
+            if (chineseStr == '') {
+                chineseStr += cnNums[0] + cnIntLast + cnInteger;
+            } else if (decimalNum == '') {
+                chineseStr += cnInteger;
+            }
+            return chineseStr;
+        }
+
+        var getDayOfMonth = function getDayOfMonth(year, month) {
+
+            var days = 0;
+            if (month != 2) {
+                switch (month) {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        days = 31;
+                        break;
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        days = 30;
+
+                }
+            } else {
+
+                if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+                    days = 29;
+                else days = 28;
+
+            }
+            return days;
+        }
+
         return {
             getSheetNoFromScan: getSheetNoFromScan,
             isMySheet: isMySheet,
+            formatMoney: formatMoney,
             hadInStock: hadInStock,
             getListInStock: getListInStock,
             getShortSheetNo: getShortSheetNo,
@@ -2046,7 +2233,13 @@ define(function (require, exports, module) {
             getDeviceType: getDeviceType,
             getPrintTemplateName: getPrintTemplateName,
             validate: validate,
-            escape: escape
+            escape: escape,
+            mul: mul,
+            add: add,
+            sub: sub,
+            div: div,
+            intToChinese: intToChinese,
+            getDayOfMonth: getDayOfMonth
         }
     })();
 

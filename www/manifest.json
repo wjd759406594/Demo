@@ -1,12 +1,11 @@
 {
   "@platforms": [
     "android",
-    "iPhone",
-    "iPad"
+    "iPhone"
   ],
-  "id": "kjwuliuyun-zx",
-  "name": "凯京物流云专线版",
-  "version": "1.0.0",
+  "id": "kjchezhu",
+  "name": "凯京车主",
+  "version": "1.0.1",
   "description": "",
   "icons": {
     "72": "icon.png"
