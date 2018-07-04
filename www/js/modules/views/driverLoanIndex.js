@@ -8,7 +8,7 @@ define(function (require, exports, module) {
     var availableAmount;
     App = {
         init: function () {
-            console.log("车主贷状态页面初始化");
+            console.log("车主贷状态页面初始化!");
 
             this.getDriverAmountLimit();
 

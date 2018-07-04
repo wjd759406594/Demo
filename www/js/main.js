@@ -1,6 +1,6 @@
 var appVersion = '6',//C8
     appName = 'T' + appVersion,
-    version = "1.0.1",
+    version = "1.0.2",
     env = "debug",
     pageSize = 20,
     sheetLength = 12,
