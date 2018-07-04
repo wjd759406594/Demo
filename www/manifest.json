@@ -1,0 +1,19 @@
+{
+  "@platforms": [
+    "android",
+    "iPhone"
+  ],
+  "id": "kjchezhu",
+  "name": "凯京车主",
+  "version": "1.0.0",
+  "description": "",
+  "icons": {
+    "72": "icon.png"
+  },
+  "launch_path": "views/home.html",
+  "developer": {
+    "name": "wangwenpeng",
+    "email": "wangwenpeng@keking.cn",
+    "url": "wangwenpeng@keking.cn"
+  }
+}
